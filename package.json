@@ -15,6 +15,16 @@
         "postcss": "^8.4.31",
         "tailwindcss": "^3.2.1",
         "vite": "^5.0.0",
-        "vue": "^3.4.0"
+        "vue": "^3.4.0",
+        "vuetify": "^3.5.7"
+    },
+    "dependencies": {
+        "@codemirror/lang-html": "^6.4.8",
+        "@codemirror/lang-javascript": "^6.2.2",
+        "@codemirror/lang-php": "^6.0.1",
+        "@codemirror/theme-one-dark": "^6.1.2",
+        "@mdi/font": "^7.4.47",
+        "codemirror": "^6.0.1",
+        "vue-codemirror": "^6.1.1"
     }
 }

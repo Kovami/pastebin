@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Paste\CreateController as CreatePasteController;
+use App\Http\Controllers\Paste\MyPastesController;
+use App\Http\Controllers\Paste\ShowController as ShowPasteController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,23 +17,30 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [CreatePasteController::class, 'create'])
+    ->name('main');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::post('/', [CreatePasteController::class, 'store']);
+
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisterController::class, 'create'])
+        ->name('register');
+
+    Route::post('register', [RegisterController::class, 'store']);
+
+    Route::get('login', [LoginController::class, 'create'])
+        ->name('login');
+
+    Route::post('login', [LoginController::class, 'store']);
+});
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('my', [MyPastesController::class, 'create'])
+        ->name('my');
+
+    Route::post('logout', [LoginController::class, 'destroy'])
+        ->name('logout');
 });
 
-require __DIR__.'/auth.php';
+Route::get('/{uri}', [ShowPasteController::class, 'create'])
+    ->name('paste-show');
